@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from "react-hook-form";
-
+import { useForm } from 'react-hook-form';
+import Alert from './Alert/Aleart';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit,setError,
-    formState: { errors } } = useForm();
-
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm();
+  const [apiError, setApiError] = useState(null);
 
   const onSubmit = async (data) => {
     try {
@@ -28,13 +32,19 @@ const Login = () => {
           navigate('/Home1');
         } else {
           // Handle the case where userId is missing in the response
-          setError('email', { type: 'manual', message: 'Invalid credentials' });
-
+          setError('email', {
+            type: 'manual',
+            message: 'Invalid credentials',
+          });
         }
       } else {
         // The credentials are incorrect, handle the error (e.g., show an error message)
-        setError('email', { type: 'manual', message: 'User Not Found. Please Sign up' });
-
+        const errorData = await response.json();
+        setApiError(errorData.error);
+        setError('email', {
+          type: 'manual',
+          message: errorData.error || 'User Not Found. Please Sign up',
+        });
         console.error('Invalid credentials');
       }
     } catch (error) {
@@ -49,8 +59,9 @@ const Login = () => {
     navigate('/Home1');
   };
   const handleHome = () => {
-    navigate('/Home')
-  }
+    navigate('/Home');
+  };
+
   return (
     <>
       <div className="">
@@ -83,7 +94,11 @@ const Login = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-black">
                 Sign in to your account
               </h1>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6" action="#">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="space-y-4 md:space-y-6"
+                action="#"
+              >
                 <div>
                   <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Your email</label>
                   <input
@@ -121,6 +136,9 @@ const Login = () => {
                   </div>
                   <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                 </div>
+                {apiError && (
+                  <Alert type="danger">{apiError}</Alert>
+                )}
                 <button type="submit" className="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                 <p className="text-sm font-light text-gray-500 dark:text-black">
                   Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={handleregistration}>Sign up</a>
@@ -130,9 +148,8 @@ const Login = () => {
           </div>
         </div>
       </div>
-
     </>
-  )
-}
+  );
+};
 
 export default Login;

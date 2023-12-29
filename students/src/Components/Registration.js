@@ -1,90 +1,89 @@
 import React, { useState } from "react";
-import { FaUser, FaEnvelope, FaMobile, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons
-import { useNavigate } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaMobile, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import Alert from "./Alert/Aleart"; // Import the Alert component
 
 const Registration = () => {
-    const [showEmailOtpInput, setShowEmailOtpInput] = useState(false);
-    const [emailOtp, setEmailOtp] = useState("");
+  const [showEmailOtpInput, setShowEmailOtpInput] = useState(false);
+  const [emailOtp, setEmailOtp] = useState("");
 
-    const [showMobileOtpInput, setShowMobileOtpInput] = useState(false);
-    const [mobileOtp, setMobileOtp] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { register, handleSubmit, setError,
-        formState: { errors }, watch, hasOwnProperty } = useForm();
+  const [showMobileOtpInput, setShowMobileOtpInput] = useState(false);
+  const [mobileOtp, setMobileOtp] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { register, handleSubmit, setError, formState: { errors }, watch } = useForm();
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
-const onSubmit = async (data) => {
-  const { confirmPassword, ...postData } = data;
+  const onSubmit = async (data) => {
+    const { confirmPassword, ...postData } = data;
 
-  try {
-    const response = await fetch("http://localhost:8000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fullName: postData.fullName,
-        email: postData.email,
-        password: postData.password,
-        number: postData.number,
-        userType: "student", 
-      }),
-    });
+    try {
+      const response = await fetch("http://localhost:8000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: postData.fullName,
+          email: postData.email,
+          password: postData.password,
+          number: postData.number,
+          userType: "student",
+        }),
+      });
 
-    const result = await response.json();
-    console.log(result);
-
-    // Redirect to another page after successful registration
-    alert("Data Submitted Successfully!");
-
-    navigate("/Signin");
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-    const sendEmailOTP = () => {
-
-        setShowEmailOtpInput(true);
-    };
-
-    const sendMobileOTP = () => {
-
-        setShowMobileOtpInput(true);
-    };
-
-    const verifyEmailOTP = () => {
-
-        alert("Email OTP Verified Successfully!");
-    };
-
-    const verifyMobileOTP = () => {
-
-        alert("Mobile OTP Verified Successfully!");
-    };
-
-    const handleGoogleRegistration = () => {
-
-        alert("Registering with Google...");
-    };
-
-    const handleSignin = () => {
-        navigate('/Signin');
-    };
-    const handleHome = () => {
-        navigate('/Home')
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        // Reset form and show success message
+        navigate("/Signin");
+      } else {
+        const errorResponse = await response.json();
+        if (response.status === 409) {
+          setError("email", { type: "manual", message: errorResponse.error });
+        } else {
+          console.error("Unknown error occurred");
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
+  };
+
+  const sendEmailOTP = () => {
+    setShowEmailOtpInput(true);
+  };
+
+  const sendMobileOTP = () => {
+    setShowMobileOtpInput(true);
+  };
+
+  const verifyEmailOTP = () => {
+    alert("Email OTP Verified Successfully!");
+  };
+
+  const verifyMobileOTP = () => {
+    alert("Mobile OTP Verified Successfully!");
+  };
+
+  const handleGoogleRegistration = () => {
+    alert("Registering with Google...");
+  };
+
+  const handleSignin = () => {
+    navigate("/Signin");
+  };
+
 
     return (
         <div className="">
@@ -95,7 +94,7 @@ const onSubmit = async (data) => {
                 </div>
 
                 <div className="items-center space-x-6">
-                    <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" onClick={handleHome}>Home</a>
+                    <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" >Home</a>
                     <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" >Companies</a>
                     <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4" >Internships</a>
                 </div>
@@ -117,6 +116,9 @@ const onSubmit = async (data) => {
                     className=" p-8 rounded shadow-md w-full bg-slate-50 mr-10"
                     style={{ width: "40rem" }}
                 >
+                        {/* <Alert type="danger" message={errors.email && errors.email.message} />
+            <Alert type="success" message="Registration successful!" /> */}
+
                     <h1 className="text-2xl font-semibold mb-4 text-center">
                         Student Registration
                     </h1>
