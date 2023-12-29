@@ -8,40 +8,45 @@ import Footer from '../Footer/Footer';
 const EmployerSection = () => {
   const [jobs, setJobs] = useState([]);
 
-  // Simulating API call to fetch jobs
   useEffect(() => {
-    // Replace this with your actual API endpoint
-    fetch('https://your-api-endpoint.com/jobs')
-      .then((response) => response.json())
-      .then((data) => setJobs(data))
-      .catch((error) => console.error('Error fetching jobs:', error));
+    // Fetch data from API when the component mounts
+    fetch('http://localhost:8000/api/postinternship')
+      .then(response => response.json())
+      .then(data => setJobs(data))
+      .catch(error => console.error('Error fetching data:', error));
   }, []);
 
   return (
     <> <div><Navbar/></div>
     <div className="flex">
       <Sidebar/>
+
+
       <div className="flex w-full">
         {/* Posted Jobs Card */}
         <div className="w-1/2 bg-white p-4 border border-gray-300 shadow-md mr-4">
           <h2 className="text-xl font-semibold mb-4">Posted Internship</h2>
           {jobs.length === 0 ? (
             <div>
-              <img
-                src="https://tse2.mm.bing.net/th?id=OIP.J9z_3SEPaAa3EqFY8U-gsgHaHa&pid=Api&P=0&h=180" // Replace with your image URL
-                alt="No Jobs Posted Yet"
-                className="mb-4 w-full h-96 object-contain"
-              />
               <p className="text-black text-center">No Internship posted yet.</p>
             </div>
           ) : (
-            <ul>
+            <div className="grid grid-cols-2 gap-4 ">
               {jobs.map((job) => (
-                <li key={job.id} className="mb-2">
-                  {job.title}
-                </li>
+                <div key={job.id} className="border p-4">
+                  <h3 className="text-lg font-semibold mb-2">{job.job_Title}</h3>
+                  <p className="text-gray-600">Location : {job.location}</p>
+                  <p className="text-gray-600">Company Name : {job. company_Name}</p>
+                  <p className="text-gray-600">Job Type : {job. job_Type}</p>
+                  <p className="text-gray-600">Number of Poitions : {job. position}</p>
+                  <p className="text-gray-600">Skills :{job.skills}</p>
+                  <p className="text-gray-600">Application start Date : {job. start_Date}</p>
+                  <p className="text-gray-600">Application end Date : {job.end_Date }</p>
+                  <p className="text-gray-600">Job Description : {job.job_Description}</p>
+                  {/* Add more details as needed */}
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
 

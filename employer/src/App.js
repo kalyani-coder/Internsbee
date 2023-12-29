@@ -4,7 +4,6 @@ import Login from "./Component/Login/Login"
 import EmployerRegistration from './Component/Signup/Signup';
 import Packages from './Component/Packages/Packages';
 import EmployerSection from './Component/HomePage/HomePage';
-import ProfilePage from './Component/CreateProfile/CreateProfile';
 import ViewProfilePage from './Component/ViewProfile/ViewProfile';
 import EmployerSidebar from './Component/Sidebar/Sidebar';
 import Navbar from './Component/Navbar/Navbar';
@@ -43,7 +42,6 @@ function App() {
         <Route path='/searchcv' element={<SearchCVPage/>} />
         <Route path="/packages" element={<Packages/>} />
         <Route path="/home" element={<EmployerSection/>} />
-        <Route path="/createprofile" element={<ProfilePage/>} />
         <Route path="/view-profile-page" element={<ViewProfilePage/>} />
         <Route path='/' element={<Login/>}/>
         <Route path='/signup' element={<Registration/>}/>

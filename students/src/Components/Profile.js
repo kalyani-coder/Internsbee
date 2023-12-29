@@ -45,9 +45,9 @@ const Profile = () => {
 
 
                     <div className="flex items-center space-x-6">
-                        <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Home</a>
-                        <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Internships</a>
-                        <a href="#" className="text-2xl font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Companies</a>
+                        <a href="#" className="text-large font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Home</a>
+                        <a href="#" className="text-large font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Internships</a>
+                        <a href="#" className="text-large font-bold focus:text-yellow-300 focus:border-yellow-300 focus:border-b-4">Companies</a>
 
 
                     </div>
@@ -81,70 +81,70 @@ const Profile = () => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
 
                         <div className="form-group">
-                            <label htmlFor="firstname" className="block text-xl font-medium">First Name</label>
+                            <label htmlFor="firstname" className="block text-large font-medium">First Name</label>
                             <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="fullname" {...register('fullname', { required: 'This field is required' })} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="lastname" className="block text-xl font-medium">Last Name</label>
+                            <label htmlFor="lastname" className="block text-large font-medium">Last Name</label>
                             <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="lastname" {...register('lastname', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="email" className="block text-xl font-medium">Email address</label>
+                            <label htmlFor="email" className="block text-large font-medium">Email address</label>
                             <input type="email" className="mt-1 p-2 w-full border rounded-md text-xl" id="email" {...register('email', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="birthdate" className="block text-xl font-medium">Birth Date</label>
+                            <label htmlFor="birthdate" className="block text-large font-medium">Birth Date</label>
                             <DatePicker
                                 selected={birthdate}
                                 onChange={handleBirthdateChange}
                                 dateFormat="MM/dd/yyyy"
-                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
                             />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="permanentaddress" className="block text-xl font-medium">Permanent Address</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="permanentaddress" {...register('permanentaddress', { required: 'This field is required' })} />
+                            <label htmlFor="permanentaddress" className="block text-large font-medium">Permanent Address</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="permanentaddress" {...register('permanentaddress', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="city" className="block text-xl font-medium">City</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="city" {...register('city', { required: 'This field is required' })} />
+                            <label htmlFor="city" className="block text-large font-medium">City</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="city" {...register('city', { required: 'This field is required' })} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="district" className="block text-xl font-medium">District</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="district" {...register('district', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="country" className="block text-xl font-medium">Country</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="country" {...register('country', { required: 'This field is required' })} />
+                            <label htmlFor="district" className="block text-large font-medium">District</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="district" {...register('district', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="currentaddress" className="block text-xl font-medium">Current Address</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="currentaddress" {...register('currentaddress', { required: 'This field is required' })} />
+                            <label htmlFor="country" className="block text-large font-medium">Country</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="country" {...register('country', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="city" className="block text-xl font-medium">City</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="city" {...register('city', { required: 'This field is required' })} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="district" className="block text-xl font-medium">District</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="district" {...register('district', { required: 'This field is required' })} />
+                            <label htmlFor="currentaddress" className="block text-large font-medium">Current Address</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="currentaddress" {...register('currentaddress', { required: 'This field is required' })} />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="country" className="block text-xl font-medium">Country</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="country" {...register('country', { required: 'This field is required' })} />
+                            <label htmlFor="city" className="block text-large font-medium">City</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="city" {...register('city', { required: 'This field is required' })} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="district" className="block text-large font-medium">District</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="district" {...register('district', { required: 'This field is required' })} />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="country" className="block text-large font-medium">Country</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="country" {...register('country', { required: 'This field is required' })} />
                         </div>
 
                     </div>
-                    <div className="text-xl flex justify-end m-4">
-                        <button type="submit" className='mt-8 p-2 text-xl text-white border rounded-md bg-gray-800'>Save and next</button>
+                    <div className="text-large flex justify-end m-4">
+                        <button type="submit" className='mt-8 p-2 text-large text-white border rounded-md bg-gray-800'>Save and next</button>
                     </div>
                 </form>
                 <div className="mt-6 text-2xl font-bold">
@@ -155,34 +155,34 @@ const Profile = () => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
 
                         <div className="form-group">
-                            <label htmlFor="education" className="block text-xl font-medium">Education</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="education" />
+                            <label htmlFor="education" className="block text-large font-medium">Education</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="education" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="institutename" className="block text-xl font-medium">School/Institute Name</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="institutename" />
+                            <label htmlFor="institutename" className="block text-large font-medium">School/Institute Name</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="institutename" />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="stream" className="block text-xl font-medium">Stream</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="stream" />
+                            <label htmlFor="stream" className="block text-large font-medium">Stream</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="stream" />
                         </div>
 
 
                         <div className="form-group">
-                            <label htmlFor="passoutyear" className="block text-xl font-medium">Pass-out Year</label>
+                            <label htmlFor="passoutyear" className="block text-large font-medium">Pass-out Year</label>
                             <DatePicker
                                 selected={birthdate}
                                 onChange={(date) => setBirthdate(date)}
 
                                 dateFormat="MM/dd/yyyy"
-                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
                             />
                         </div>
                     </div>
                     <div className="text-xl flex justify-end m-4">
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800 mr-4'>Add</button>
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800 '>Save and next</button>
+                        <button type="button" className='mt-8 p-2 text-large text-white border rounded-md  bg-gray-800 mr-4'>Add</button>
+                        <button type="button" className='mt-8 p-2 text-large text-white border rounded-md  bg-gray-800 '>Save and next</button>
 
                     </div>
                 </form>
@@ -196,8 +196,8 @@ const Profile = () => {
                     <div className=" grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
 
                         <div className="form-group">
-                            <label htmlFor="keyskills" className="block text-xl font-medium">Key SKills</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="keyskills" />
+                            <label htmlFor="keyskills" className="block text-large font-medium">Key SKills</label>
+                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="keyskills" />
                         </div>
                         <div className="form-group">
                             <label htmlFor="languages" className="block text-xl font-medium">Languages</label>

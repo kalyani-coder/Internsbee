@@ -1,5 +1,8 @@
 // src/components/ViewProfilePage.js
 import React, { useState } from 'react';
+import Navbar from '../Navbar/Navbar';
+import Sidebar from '../Sidebar/Sidebar';
+import Footer from '../Footer/Footer';
 
 const ViewProfilePage = () => {
   const [profileData, setProfileData] = useState({
@@ -51,7 +54,9 @@ const ViewProfilePage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 bg-amber-300 pl-7 p-7">
+    <> <div><Navbar/></div>
+    
+    <div className="max-w-4xl mx-auto mt-5 bg-amber-300 pl-7 p-7"> 
       <h2 className="text-3xl font-semibold mb-6">View Profile</h2>
 
       {/* Personal Information Section */}
@@ -437,6 +442,8 @@ const ViewProfilePage = () => {
         </div>
       )}
     </div>
+    <div><Footer/></div>
+    </>
   );
 };
 
