@@ -42,7 +42,21 @@ router.get("/studentId/:id", async (req, res) => {
 // POST route
 router.post("/", async (req, res) => {
   const studentData = req.body;
+  const studentId = studentData.student_id;
+
   try {
+    // Check if a student with the same student_id already exists
+    const existingStudent = await StudentDetailsModel.findOne({
+      student_id: studentId,
+    });
+
+    if (existingStudent) {
+      return res
+        .status(409)
+        .json({ message: "Student with the same ID already exists" });
+    }
+
+    // If no existing student with the same ID, create and save the new student
     const student = new StudentDetailsModel(studentData);
     await student.save();
     res.status(201).json(student);
