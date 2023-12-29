@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const employerRoutes = require("./routes/employerRoutes");
 const postInternship = require('./routes/postInternship');
 const studentsDetails = require('./routes/StudentsDetails');
+const Resume = require('./routes/Resume');
 
 
 
@@ -34,6 +35,8 @@ app.use("/employers", employerRoutes); // Mount employer-related routes"
 apiRouter.use("/postinternship" , postInternship)
 
 apiRouter.use("/studentsdetails" , studentsDetails)
+
+apiRouter.use("/resume" , Resume)
 
 
 app.use('/api', apiRouter)
