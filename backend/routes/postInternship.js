@@ -26,6 +26,7 @@ router.post('/', async (req, res) => {
     try {
         // Destructure the required fields from the request body
         const {
+            userId , 
             job_Title,
             location,
             company_Name,
@@ -40,6 +41,7 @@ router.post('/', async (req, res) => {
 
         // Create a new internship post instance
         const newInternship = new newInterShipSchema({
+            userId,
             job_Title,
             location,
             company_Name,

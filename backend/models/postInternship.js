@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 
 const PostInternshipSchema = new mongoose.Schema({
+    userId : String , 
 
     job_Title : String,
     location : String,
