@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef , useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Sidebar from './Sidebar';
 
@@ -13,6 +13,7 @@ import {
     FaCalendar, FaMoneyBill, FaMapMarkerAlt, FaRegClock, FaMobile, FaPalette, FaCode, FaChartBar,
     FaUsers, FaGreaterThan, FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaUser
 } from 'react-icons/fa';
+
 
 import Footer from '../Components/Footer';
 
@@ -36,6 +37,8 @@ const LeftArrow = ({ onClick }) => (
 );
 
 const Home1 = () => {
+    const [internships, setInternships] = useState([]);
+  
     const companiesRef = useRef(null);
     const internshipsRef = useRef(null);
     const navigate = useNavigate();
@@ -44,6 +47,28 @@ const Home1 = () => {
     const handleProfileIconClick = () => {
         setShowProfileDropdown(!showProfileDropdown);
     };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/postinternship/');
+        if (response.ok) {
+          const data = await response.json();
+          setInternships(data);
+        } else {
+          console.error('Failed to fetch data');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleInternshipClick = (id) => {
+    navigate(`/internship/${id}`);
+  };
 
     const handleViewProfile = () => {
 
@@ -117,29 +142,29 @@ const Home1 = () => {
         // Add more companies as needed
     ];
 
-    const internships = [
-        {
-            id: 1,
-            companyName: 'Accenture',
-            reviews: 4.5,
-            experienceRequired: 2,
-            stipend: 'Rs. 15,000 per month',
-            location: 'Bangalore',
-            skillsRequired: ['React', 'Node.js', 'MongoDB'],
-            deadline: '2023-12-31',
-        },
-        {
-            id: 2,
-            companyName: 'Tata Consultancy Service',
-            reviews: 4.2,
-            experienceRequired: 1,
-            stipend: 'Rs. 12,000 per month',
-            location: 'Mumbai',
-            skillsRequired: ['Java', 'Spring Boot', 'Hibernate'],
-            deadline: '2023-12-20',
-        },
-        // Add more internships as needed
-    ];
+    // const internships = [
+    //     {
+    //         id: 1,
+    //         companyName: 'Accenture',
+    //         reviews: 4.5,
+    //         experienceRequired: 2,
+    //         stipend: 'Rs. 15,000 per month',
+    //         location: 'Bangalore',
+    //         skillsRequired: ['React', 'Node.js', 'MongoDB'],
+    //         deadline: '2023-12-31',
+    //     },
+    //     {
+    //         id: 2,
+    //         companyName: 'Tata Consultancy Service',
+    //         reviews: 4.2,
+    //         experienceRequired: 1,
+    //         stipend: 'Rs. 12,000 per month',
+    //         location: 'Mumbai',
+    //         skillsRequired: ['Java', 'Spring Boot', 'Hibernate'],
+    //         deadline: '2023-12-20',
+    //     },
+    //     // Add more internships as needed
+    // ];
     const yourCardArray = [
         {
             icons: FaMobile,
@@ -268,48 +293,49 @@ const Home1 = () => {
                         ))}
                     </Slider>
                 </div>
-                <div ref={internshipsRef}>
-                    <div className='mt-20 mb-10 text-4xl font-bold flex flex-col items-center'>
-                        <h1>Expolre Internships Opportunity</h1>
-                    </div>
-                    <div className="flex flex-col items-center ">
-                        {internships.map(internship => (
-                            <div key={internship.id} className="card  w-1/2 m-6 rounded-md flex flex-grow justify-between items-center bg-white  shadow-md overflow-hidden">
-                                <div className="flex-grow px-6 py-4">
-
-                                    <h2 className="card-title text-2xl font-semibold text-gray-800">{internship.position}</h2>
-                                    <p className="card-company text-xl text-gray-700">{internship.companyName}</p>
-
-                                    <div className="flex justify-between items-center my-4">
-
-                                        <div className="flex items-center">
-                                            <FaCalendar className="mr-2" />
-                                            <p className="card-company text-xl text-gray-700">{internship.duration}</p>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <FaMoneyBill className="mr-2" />
-                                            <p className="card-location text-xl text-gray-700">&#x20B9;{internship.stipend}</p>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <FaMapMarkerAlt className="mr-2" />
-                                            <p className="card-duration text-xl text-gray-700">{internship.location}</p>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <FaRegClock className="mr-2" />
-                                            <p className="card-duration text-xl text-gray-700">{internship.deadline}</p>
-                                        </div>
-
-                                    </div>
-
-                                    <p className="card-description text-base text-gray-700 my-4">
-                                        {`We are seeking a talented and driven ${internship.companyName} with a solid skills ...`}
-                                    </p>
-                                    <p className="card-skills text-base text-gray-700">Skills: {internship.skillsRequired.join(', ')}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                <div className="flex flex-col items-center ">
+                <div className='mt-80 mb-10 text-4xl font-bold flex flex-col items-center'>
+                    <h1>Dream Internship here</h1>
                 </div>
+
+                {internships.slice(0, 3).map(internship => (
+    <div key={internship._id} className="card w-full m-6  rounded-md flex flex-grow justify-between items-center bg-white shadow-md overflow-hidden">
+        <div className="flex-grow px-6 py-4 pr-20 pl-20">
+            <h2 className="card-title text-2xl font-semibold text-gray-800">{internship.job_Title}</h2>
+            <p className="card-company text-xl text-gray-700">{internship.company_Name}</p>
+
+            <div className="flex justify-between items-center my-4">
+                <div className="flex items-center">
+                    <FaCalendar className="mr-2" />
+                    <p className="card-company text-xl text-gray-700">{internship.start_Date}</p>
+                </div>
+                {/* Other details here */}
+                <div className="flex items-center">
+                    <FaMoneyBill className="mr-2" />
+                    <p className="card-location text-xl text-gray-700">&#x20B9;{internship.stipend}</p>
+                </div>
+                <div className="flex items-center">
+                    <FaMapMarkerAlt className="mr-2" />
+                    <p className="card-duration text-xl text-gray-700">{internship.location}</p>
+                </div>
+                <div className="flex items-center">
+                    <FaRegClock className="mr-2" />
+                    <p className="card-duration text-xl text-gray-700">{internship.end_Date}</p>
+                </div>
+            </div>
+
+            <p className="card-description text-base text-gray-700 my-4">{internship.job_Description}</p>
+            {/* Additional details here */}
+            <button className="mt-4 bg-blue-700 hover:bg-yellow-300 text-black rounded-md px-4 py-2" onClick={() => handleInternshipClick(internship._id)}>
+                View Internship
+            </button>
+        </div>
+    </div>
+))}
+
+                </div>
+    
+        
                 <div className="mt-10 flex justify-center">
                     <button className="bg-blue-500 w-1/6 hover:bg-blue-700 text-white rounded-md px-6 py-3" onClick={Internshipp}>
                         View All
