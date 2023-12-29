@@ -1,17 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import Alert from "../../Alert/Aleart";
 
 const PostInternship = () => {
+  const [posting, setPosting] = useState(false);
+  const [alert, setAlert] = useState(null);
   const [formData, setFormData] = useState({
-    job_Title: '',
-    location: '',
-    company_Name: '',
-    start_Date: '',
-    end_Date: '',
-    job_Type: 'Full-time',
-    skills: '',
-    position: '',
-    job_Description: '',
+    job_Title: "",
+    location: "",
+    company_Name: "",
+    start_Date: "",
+    empName: "",
+    empEmail: "",
+    empPhone: "",
+    end_Date: "",
+    job_Type: "Full-time",
+    skills: "",
+    position: "",
+    job_Description: "",
+    userId: "", // Include userId in formData
   });
+
+ useEffect(() => {
+   const userIdFromLocalStorage = localStorage.getItem("userId");
+   if (userIdFromLocalStorage) {
+     // Fetch data using userId
+     fetch(`http://localhost:8000/employers/userId/${userIdFromLocalStorage}`)
+       .then((response) => response.json())
+       .then((data) => {
+         if (data && data.employer) {
+           const { companyName, companyEmail, companyPhoneNumber } =
+             data.employer;
+
+           // Update formData state with fetched data
+           setFormData({
+             ...formData,
+             empName: companyName,
+             empEmail: companyEmail,
+             empPhone: companyPhoneNumber,
+             userId: userIdFromLocalStorage,
+           });
+         } else {
+           console.error("No employer data found in the response");
+           // Handle error, e.g., set an alert message
+           setAlert({
+             type: "danger",
+             message: "No employer data found",
+           });
+         }
+       })
+       .catch((error) => {
+         console.error("Error fetching data:", error);
+         // Handle error, e.g., set an alert message
+         setAlert({
+           type: "danger",
+           message: "Error fetching data",
+         });
+       });
+   }
+ }, []);
+
 
   const handleChange = (e) => {
     setFormData({
@@ -23,46 +70,83 @@ const PostInternship = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation: Check if required fields are filled
-    const requiredFields = ['job_Title', 'location', 'company_Name', 'start_Date', 'end_Date', 'position', 'job_Description'];
-    const isFormValid = requiredFields.every(field => formData[field].trim() !== '');
+    // Validation and form submission logic
+    const requiredFields = [
+      "job_Title",
+      "location",
+      "company_Name",
+      "start_Date",
+      "end_Date",
+      "position",
+      "job_Description",
+    ];
+    const isFormValid = requiredFields.every(
+      (field) => formData[field].trim() !== ""
+    );
 
     if (!isFormValid) {
-      console.error('Please fill out all required fields');
-      // You can display an error message to the user
+      setAlert({
+        type: "danger",
+        message: "Please fill out all required fields",
+      });
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/postinternship', {
-        method: 'POST',
+      setPosting(true);
+      const response = await fetch("http://localhost:8000/api/postinternship", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        console.log('Form data submitted successfully');
-        // You can handle success, e.g., redirect or show a success message
+        setAlert({
+          type: "success",
+          message: "Form data submitted successfully",
+        });
+        setPosting(false);
+        // Handle success, e.g., redirect or show a success message
       } else {
-        console.error('Failed to submit form data');
-        // You can handle errors, e.g., show an error message to the user
+        setAlert({ type: "danger", message: "Failed to submit form data" });
+        setPosting(false);
+        // Handle errors, e.g., show an error message to the user
       }
     } catch (error) {
-      console.error('Error during form submission', error);
+      setAlert({ type: "danger", message: "Error during form submission" });
+      console.error("Error during form submission", error);
+      setPosting(false);
       // Handle other types of errors, e.g., network issues
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto mt-8 p-8 bg-amber-300 rounded shadow-md">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Post Internship</h2>
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        Post Internship
+      </h2>
+      {alert && (
+        <Alert type={alert.type}>
+          <p className="font-bold">
+            {alert.type === "success" ? "Success" : "Error"}
+          </p>
+          <p>{alert.message}</p>
+        </Alert>
+      )}
 
-      <form onSubmit={handleSubmit} autoComplete="off" className="flex flex-wrap -mx-4">
+      <form
+        onSubmit={handleSubmit}
+        autoComplete="off"
+        className="flex flex-wrap -mx-4"
+      >
         {/* Job Title */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="job_Title" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="job_Title"
+            className="block text-sm font-medium text-black"
+          >
             Internship Title:
           </label>
           <input
@@ -79,7 +163,10 @@ const PostInternship = () => {
 
         {/* Location */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="location" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="location"
+            className="block text-sm font-medium text-black"
+          >
             Location:
           </label>
           <input
@@ -96,7 +183,10 @@ const PostInternship = () => {
 
         {/* Company Name */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="company_Name" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="company_Name"
+            className="block text-sm font-medium text-black"
+          >
             Company Name:
           </label>
           <input
@@ -113,7 +203,10 @@ const PostInternship = () => {
 
         {/* Start Date */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="start_Date" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="start_Date"
+            className="block text-sm font-medium text-black"
+          >
             Start Date:
           </label>
           <input
@@ -129,7 +222,10 @@ const PostInternship = () => {
 
         {/* End Date */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="end_Date" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="end_Date"
+            className="block text-sm font-medium text-black"
+          >
             End Date:
           </label>
           <input
@@ -144,7 +240,10 @@ const PostInternship = () => {
 
         {/* Job Type */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="job_Type" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="job_Type"
+            className="block text-sm font-medium text-black"
+          >
             Job Type:
           </label>
           <select
@@ -162,7 +261,10 @@ const PostInternship = () => {
 
         {/* Skills */}
         <div className="w-full px-4 mb-4">
-          <label htmlFor="skills" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="skills"
+            className="block text-sm font-medium text-black"
+          >
             Skills:
           </label>
           <input
@@ -178,7 +280,10 @@ const PostInternship = () => {
 
         {/* Position */}
         <div className="w-full md:w-1/2 px-4 mb-4">
-          <label htmlFor="position" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="position"
+            className="block text-sm font-medium text-black"
+          >
             Position:
           </label>
           <input
@@ -195,7 +300,10 @@ const PostInternship = () => {
 
         {/* Job Description */}
         <div className="w-full px-4 mb-4">
-          <label htmlFor="job_Description" className="block text-sm font-medium text-black">
+          <label
+            htmlFor="job_Description"
+            className="block text-sm font-medium text-black"
+          >
             Job Description:
           </label>
           <textarea
@@ -214,6 +322,7 @@ const PostInternship = () => {
         <div className="w-full px-4 mt-4">
           <button
             type="submit"
+            disabled={posting}
             className="bg-black text-amber-300 py-2 px-4 rounded hover:bg-gray-800"
           >
             Post Internship
