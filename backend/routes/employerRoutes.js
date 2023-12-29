@@ -65,6 +65,22 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.get("/userId/:id", async (req, res) => {
+  const userId = req.params.id; // Get the userId from the request parameters
+
+  try {
+    const employer = await Employer.findOne({ userId }); // Search for the employer by userId
+
+    if (!employer) {
+      return res.status(404).json({ error: "Employer not found" });
+    }
+
+    res.status(200).json({ employer }); // Send the employer details if found
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // DELETE - Delete an employer by ID
 router.delete("/:id", async (req, res) => {
   try {
