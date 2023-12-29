@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-apiRouter = express.Router()
+apiRouter = express.Router();
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const employerRoutes = require("./routes/employerRoutes");
-const postInternship = require('./routes/postInternship')
+const postInternship = require('./routes/postInternship');
+const studentsDetails = require('./routes/StudentsDetails');
 
 
 
@@ -31,6 +32,8 @@ app.use("/users", userRoutes); // Mount user-related routes
 app.use("/employers", employerRoutes); // Mount employer-related routes"
 
 apiRouter.use("/postinternship" , postInternship)
+
+apiRouter.use("/studentsdetails" , studentsDetails)
 
 
 app.use('/api', apiRouter)
