@@ -41,7 +41,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
 router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
@@ -63,6 +62,8 @@ router.post("/signin", async (req, res) => {
     // Include user data in the response with modified userId (_id)
     res.json({
       userId: user._id, // Using user._id as userId
+      email: user.email,
+      Number: user.number,
     });
   } catch (error) {
     res.status(500).json({ error: "Something went wrong" });

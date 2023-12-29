@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 
 const PostInternshipSchema = new mongoose.Schema({
     userId : String , 
-
+    empName : String,
+    empEmail : String,
+    empPhone : String,
     job_Title : String,
     location : String,
     company_Name : String,
@@ -13,7 +15,9 @@ const PostInternshipSchema = new mongoose.Schema({
     stipned : String,
     skills : String,
     position : String,
-    job_Description : String
+    job_Description : String,
+    stipend : String,
+    
 
 })
 
