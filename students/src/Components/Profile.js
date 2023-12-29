@@ -10,26 +10,75 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Profile = () => {
-    const [birthdate, setBirthdate] = useState(null);
-    const { register, handleSubmit, setValue, reset } = useForm();
+
     const navigate = useNavigate();
-
-    const onSubmit = (data) => {
-        alert("Data Submitted Successfully!");
-        console.log(data)
-        reset();
-    }
-    const handleBirthdateChange = (date) => {
-        setBirthdate(date);
-        // Set birthdate in the form data using setValue
-        setValue('birthdate', date);
-    };
-
-
 
     const handleResume = () => {
         navigate('/Resume');
     };
+
+
+    // new code start here 
+
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        birthdate: '',
+        permanent_address: '',
+        city: '',
+        district: '',
+        country: '',
+        current_address: '',
+        current_city: '',
+        current_district: '',
+        current_country: '',
+        education: '',
+        instituteName: '',
+        stream: '',
+        passOutYear: '',
+        keySkills: '',
+        languages: ' ',
+        experience: ' ',
+        salaryExpectations: ' ',
+        projectName: ' ',
+        projectSummary: ' ',
+
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            console.log('Form Data:', formData);
+            const response = await fetch('http://localhost:8000/api/studentsdetails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                console.log('Data submitted successfully:', response);
+            } else {
+                console.error('Error submitting data');
+            }
+        } catch (error) {
+            console.error('Error creating data:', error);
+            // Handle the error appropriately in the frontend, e.g., show a user-friendly error message
+        }
+    };
+
 
     return (
         <div className="">
@@ -72,225 +121,409 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
+
+
+
+
+
                 <div className="mt-6 text-2xl font-bold">
                     <h6>1.Personal Details</h6>
-
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
 
                         <div className="form-group">
-                            <label htmlFor="firstname" className="block text-large font-medium">First Name</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="fullname" {...register('fullname', { required: 'This field is required' })} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="lastname" className="block text-large font-medium">Last Name</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="lastname" {...register('lastname', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="email" className="block text-large font-medium">Email address</label>
-                            <input type="email" className="mt-1 p-2 w-full border rounded-md text-xl" id="email" {...register('email', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="birthdate" className="block text-large font-medium">Birth Date</label>
-                            <DatePicker
-                                selected={birthdate}
-                                onChange={handleBirthdateChange}
-                                dateFormat="MM/dd/yyyy"
+                            <label htmlFor="firstName">First Name</label>
+                            <input
                                 className="mt-1 p-2 w-full border rounded-md text-large"
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
                             />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="permanentaddress" className="block text-large font-medium">Permanent Address</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="permanentaddress" {...register('permanentaddress', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="city" className="block text-large font-medium">City</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="city" {...register('city', { required: 'This field is required' })} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="district" className="block text-large font-medium">District</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="district" {...register('district', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="country" className="block text-large font-medium">Country</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="country" {...register('country', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="currentaddress" className="block text-large font-medium">Current Address</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="currentaddress" {...register('currentaddress', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="city" className="block text-large font-medium">City</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="city" {...register('city', { required: 'This field is required' })} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="district" className="block text-large font-medium">District</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="district" {...register('district', { required: 'This field is required' })} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="country" className="block text-large font-medium">Country</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="country" {...register('country', { required: 'This field is required' })} />
-                        </div>
-
-                    </div>
-                    <div className="text-large flex justify-end m-4">
-                        <button type="submit" className='mt-8 p-2 text-large text-white border rounded-md bg-gray-800'>Save and next</button>
-                    </div>
-                </form>
-                <div className="mt-6 text-2xl font-bold">
-                    <h6>2.Educational Details</h6>
-                </div>
-
-                <form>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
-
-                        <div className="form-group">
-                            <label htmlFor="education" className="block text-large font-medium">Education</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="education" />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="institutename" className="block text-large font-medium">School/Institute Name</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="institutename" />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="stream" className="block text-large font-medium">Stream</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="stream" />
-                        </div>
-
-
-                        <div className="form-group">
-                            <label htmlFor="passoutyear" className="block text-large font-medium">Pass-out Year</label>
-                            <DatePicker
-                                selected={birthdate}
-                                onChange={(date) => setBirthdate(date)}
-
-                                dateFormat="MM/dd/yyyy"
+                            <label htmlFor="lastName">Last Name</label>
+                            <input
                                 className="mt-1 p-2 w-full border rounded-md text-large"
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="birthdate">Birthdate</label>
+                            <input
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                type="text"
+                                id="birthdate"
+                                name="birthdate"
+                                value={formData.birthdate}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="permanentaddress" className="block text-large font-medium">
+                                Permanent Address
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="permanent_address"
+                                name="permanent_address"
+                                value={formData.permanent_address}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="city" className="block text-large font-medium">City</label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="city"
+                                name="city"
+                                value={formData.city}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="district" className="block text-large font-medium">District</label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="district"
+                                name="district"
+                                value={formData.district}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="country" className="block text-large font-medium">Country</label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="country"
+                                name="country"
+                                value={formData.country}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="current_address" className="block text-large font-medium">
+                                Current Address
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="current_address"
+                                name="current_address"
+                                value={formData.current_address}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="current_city" className="block text-large font-medium">
+                                Current City
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="current_city"
+                                name="current_city"
+                                value={formData.current_city}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="currentdistrict" className="block text-large font-medium">
+                                Current District
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="current_district"
+                                name="current_district"
+                                value={formData.current_district}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="currentcountry" className="block text-large font-medium">
+                                Current Country
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="current_country"
+                                name="current_country"
+                                value={formData.current_country}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
-                    <div className="text-xl flex justify-end m-4">
-                        <button type="button" className='mt-8 p-2 text-large text-white border rounded-md  bg-gray-800 mr-4'>Add</button>
-                        <button type="button" className='mt-8 p-2 text-large text-white border rounded-md  bg-gray-800 '>Save and next</button>
+                    <hr />
 
+
+
+                    <div className="mt-6 text-2xl font-bold">
+                        <h6>2. Educational Details</h6>
                     </div>
-                </form>
 
-                <div className="mt-6 text-2xl font-bold">
-                    <h6>3.Technical Details</h6>
 
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
+                        <div className="form-group">
+                            <label htmlFor="education" className="block text-large font-medium">
+                                Education
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="education"
+                                name="education"
+                                value={formData.education}
+                                onChange={handleChange}
+                            />
+                        </div>
 
-                <form>
+                        <div className="form-group">
+                            <label htmlFor="institutename" className="block text-large font-medium">
+                                School/Institute Name
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="instituteName"
+                                name="instituteName"
+                                value={formData.instituteName}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="stream" className="block text-large font-medium">
+                                Stream
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="stream"
+                                name="stream"
+                                value={formData.stream}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="passoutyear" className="block text-large font-medium">
+                                Pass-out Year
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="passOutYear"
+                                name="passOutYear"
+                                value={formData.passOutYear}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+
+
+
+
+                    <hr />
+
+
+
+                    <div className="mt-6 text-2xl font-bold">
+                        <h6>3.Technical Details</h6>
+                    </div>
+
                     <div className=" grid grid-cols-1 md:grid-cols-4 gap-10 m-4">
 
                         <div className="form-group">
-                            <label htmlFor="keyskills" className="block text-large font-medium">Key SKills</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-large" id="keyskills" />
+                            <label htmlFor="keyskills" className="block text-large font-medium">
+                                Key Skills
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-large"
+                                id="keyskills"
+                                name="keySkills"
+                                value={formData.keySkills}
+                                onChange={handleChange}
+                            />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="languages" className="block text-xl font-medium">Languages</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="languages" />
+                            <label htmlFor="languages" className="block text-xl font-medium">
+                                Languages
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                id="languages"
+                                name="languages"
+                                value={formData.languages}
+                                onChange={handleChange}
+                            />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="experience" className="block text-xl font-medium">Experience(if any)</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="experience" />
+                            <label htmlFor="experience" className="block text-xl font-medium">
+                                Experience(if any)
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                id="experience"
+                                name="experience"
+                                value={formData.experience}
+                                onChange={handleChange}
+                            />
                         </div>
 
 
                         <div className="form-group">
-                            <label htmlFor="salaryexpections" className="block text-xl font-medium">Salary Expections</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="salaryexpections" />
+                            <label htmlFor="salaryexpectations" className="block text-xl font-medium">
+                                Salary Expectations
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                id="salaryexpectations"
+                                name="salaryExpectations"
+                                value={formData.salaryExpectations}
+                                onChange={handleChange}
+                            />
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="projectname" className="block text-xl font-medium">Project Name</label>
-                            <input type="text" className="mt-1 p-2 w-full border rounded-md text-xl" id="projectname" />
+                            <label htmlFor="projectname" className="block text-xl font-medium">
+                                Project Name
+                            </label>
+                            <input
+                                type="text"
+                                className="mt-1 p-2 w-full border rounded-md text-xl"
+                                id="projectname"
+                                name="projectName"
+                                value={formData.projectName}
+                                onChange={handleChange}
+                            />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="projectsummary" className="block text-xl font-medium">Project Summary</label>
+                            <label htmlFor="projectsummary" className="block text-xl font-medium">
+                                Project Summary
+                            </label>
                             <textarea
                                 id="projectsummary"
                                 className="mt-1 p-2 w-full border rounded-md text-xl"
                                 rows="4"
-
+                                name="projectSummary"
+                                value={formData.projectSummary}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
-                    <div className="text-xl flex justify-end m-4">
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800 mr-4'>Add</button>
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800'>Save and next</button>
 
+                    <div>
+                        <button type="submit"
+                            className=' p-2 text-xl text-white border rounded-md  bg-gray-800'
+                        >   Submit
+
+                        </button>
                     </div>
                 </form>
 
+                <hr />
+
+
+
+                {/* <form>
                 <div className="mt-6 text-2xl font-bold">
                     <h6>4.Upload Documents</h6>
                 </div>
-                <form>
+
+                
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        {/* Column 1: Upload Resume */}
                         <div className="form-group">
-                            <label htmlFor="resume" className="block text-xl font-medium">Resume</label>
-                            <input
-                                type="file"
-                                id="resume"
-                                accept=".pdf, .doc, .docx"
-                                className="mt-1 p-2 w-full border rounded-md text-xl"
-                            />
+                        <label htmlFor="resume" className="block text-xl font-medium">
+            Resume
+          </label>
+          <input
+            type="file"
+            id="students_resume"
+            accept=".pdf, .doc, .docx"
+            className="mt-1 p-2 w-full border rounded-md text-xl"
+            onChange={handleFileChange}
+          />
                         </div>
 
-                        {/* Column 2: "Or" Text */}
                         <div className="form-group col-span-3 md:col-span-1 mt-10">
                             <span className="block text-xl font-large">OR</span>
                         </div>
 
-                        {/* Column 3: Create Resume Button */}
+                        <div className="form-group">
+                        <label htmlFor="certification" className="block text-xl font-medium mt-10">
+            Certification
+          </label>
+          <input
+            type="file"
+            id="certification"
+            accept=".pdf, .doc, .docx"
+            className="mt-1 p-2 w-full border rounded-md text-xl"
+            onChange={handleFileChange}
+          />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="profilePicture" className="block text-xl font-medium mt-10">
+            Profile Picture
+          </label>
+          <input
+            type="file"
+            id="profile_picture"
+            accept="image/*"
+            className="mt-1 p-2 w-full border rounded-md text-xl"
+            onChange={handleFileChange}
+          />
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="text-xl flex justify-end m-4">
+                         <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800'>Save Your Details</button>
+
                         <div className="form-group">
                             <button type='button' className='mt-8 p-2 text-xl text-white border rounded-md bg-gray-800' onClick={handleResume}>Create Resume</button>
                         </div>
-
-                        {/* Column 4: Upload Certification */}
-                        <div className="form-group">
-                            <label htmlFor="certification" className="block text-xl font-medium mt-10">Certification</label>
-                            <input
-                                type="file"
-                                id="certification"
-                                accept=".pdf, .doc, .docx"
-                                className="mt-1 p-2 w-full border rounded-md text-xl"
-                            />
-                        </div>
-
-                        {/* Column 5: Upload Profile Picture */}
-                        <div className="form-group">
-                            <label htmlFor="profilePicture" className="block text-xl font-medium mt-10">Profile Picture</label>
-                            <input
-                                type="file"
-                                id="profilePicture"
-                                accept="image/*"
-                                className="mt-1 p-2 w-full border rounded-md text-xl"
-                            />
-                        </div>
                     </div>
-                    <div className="text-xl flex justify-end m-4">
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800 mr-4'>Add</button>
-                        <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800'>Save and next</button>
-
-                    </div>
-                </form>
-
+                   
+                </form> */}
             </div>
 
         </div >

@@ -29,6 +29,7 @@ const Login = () => {
         // Assuming the response contains the userId
         if (responseData.userId) {
           // The credentials are correct, navigate to the home page
+          localStorage.setItem('userId', responseData.userId);
           navigate('/Home1');
         } else {
           // Handle the case where userId is missing in the response
