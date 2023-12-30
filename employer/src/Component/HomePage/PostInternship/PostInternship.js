@@ -4,6 +4,7 @@ import Alert from "../../Alert/Aleart";
 const PostInternship = () => {
   const [posting, setPosting] = useState(false);
   const [alert, setAlert] = useState(null);
+  const [jobs, setJobs] = useState([]);
   const [formData, setFormData] = useState({
     job_Title: "",
     location: "",
@@ -19,45 +20,37 @@ const PostInternship = () => {
     job_Description: "",
     userId: "", // Include userId in formData
   });
+ 
+  useEffect(() => {
+    // Fetch all job posts
+    fetch(`http://localhost:8000/api/postinternship`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("API Response:", data);
 
- useEffect(() => {
-   const userIdFromLocalStorage = localStorage.getItem("userId");
-   if (userIdFromLocalStorage) {
-     // Fetch data using userId
-     fetch(`http://localhost:8000/employers/userId/${userIdFromLocalStorage}`)
-       .then((response) => response.json())
-       .then((data) => {
-         if (data && data.employer) {
-           const { companyName, companyEmail, companyPhoneNumber } =
-             data.employer;
-
-           // Update formData state with fetched data
-           setFormData({
-             ...formData,
-             empName: companyName,
-             empEmail: companyEmail,
-             empPhone: companyPhoneNumber,
-             userId: userIdFromLocalStorage,
-           });
-         } else {
-           console.error("No employer data found in the response");
-           // Handle error, e.g., set an alert message
-           setAlert({
-             type: "danger",
-             message: "No employer data found",
-           });
-         }
-       })
-       .catch((error) => {
-         console.error("Error fetching data:", error);
-         // Handle error, e.g., set an alert message
-         setAlert({
-           type: "danger",
-           message: "Error fetching data",
-         });
-       });
-   }
- }, []);
+        if (data && data.jobs) {
+          // Update state with fetched jobs
+          setJobs(data.jobs);
+        } else {
+          console.error("No jobs found in the response");
+          // Handle error, e.g., set an alert message
+          // setAlert({
+          //   type: "danger",
+          //   message: "No jobs found",
+          // });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching jobs:", error);
+        // Handle error, e.g., set an alert message
+        setAlert({
+          type: "danger",
+          message: "Error fetching jobs",
+        });
+      });
+  }, []);
+  
+  
 
 
   const handleChange = (e) => {
@@ -66,10 +59,9 @@ const PostInternship = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validation and form submission logic
     const requiredFields = [
       "job_Title",
@@ -83,7 +75,7 @@ const PostInternship = () => {
     const isFormValid = requiredFields.every(
       (field) => formData[field].trim() !== ""
     );
-
+  
     if (!isFormValid) {
       setAlert({
         type: "danger",
@@ -91,7 +83,17 @@ const PostInternship = () => {
       });
       return;
     }
-
+  
+    // Fetch employer ID from local storage
+    const employerId = localStorage.getItem("userId");
+    console.log(employerId);
+  
+    // Include employer ID in formData
+    setFormData({
+      ...formData,
+      userId: employerId,
+    });
+  
     try {
       setPosting(true);
       const response = await fetch("http://localhost:8000/api/postinternship", {
@@ -101,7 +103,7 @@ const PostInternship = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         setAlert({
           type: "success",

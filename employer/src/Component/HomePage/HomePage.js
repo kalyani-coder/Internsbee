@@ -9,17 +9,13 @@ const EmployerSection = () => {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    const userIdFromLocalStorage = localStorage.getItem("userId");
-    // Fetch data from API when the component mounts
-    if (userIdFromLocalStorage) {
-      fetch(
-        `http://localhost:8000/api/postinternship/userId/${userIdFromLocalStorage}`
-      )
-        .then((response) => response.json())
-        .then((data) => setJobs(data))
-        .catch((error) => console.error("Error fetching data:", error));
-    }
+    // Fetch all job posts
+    fetch(`http://localhost:8000/api/postinternship`)
+      .then((response) => response.json())
+      .then((data) => setJobs(data))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
+
 
   return (
     <>
@@ -43,7 +39,7 @@ const EmployerSection = () => {
             ) : (
               <div className="grid grid-cols-2 gap-4 ">
                 {jobs.map((job) => (
-                  <div key={job.id} className="border p-4">
+                  <div key={job._id} className="border p-4">
                     <h3 className="text-lg font-semibold mb-2">
                       {job.job_Title}
                     </h3>
@@ -53,9 +49,9 @@ const EmployerSection = () => {
                     </p>
                     <p className="text-gray-600">Job Type : {job.job_Type}</p>
                     <p className="text-gray-600">
-                      Number of Poitions : {job.position}
+                      Number of Positions : {job.position}
                     </p>
-                    <p className="text-gray-600">Skills :{job.skills}</p>
+                    <p className="text-gray-600">Skills : {job.skills}</p>
                     <p className="text-gray-600">
                       Application start Date : {job.start_Date}
                     </p>
@@ -65,7 +61,6 @@ const EmployerSection = () => {
                     <p className="text-gray-600">
                       Job Description : {job.job_Description}
                     </p>
-                    {/* Add more details as needed */}
                   </div>
                 ))}
               </div>
