@@ -55,29 +55,50 @@ const Profile = () => {
     };
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
 
-        try {
-            console.log('Form Data:', formData);
-            const response = await fetch('http://localhost:8000/api/studentsdetails', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
 
-            if (response.ok) {
-                console.log('Data submitted successfully:', response);
-            } else {
-                console.error('Error submitting data');
-            }
-        } catch (error) {
-            console.error('Error creating data:', error);
-            // Handle the error appropriately in the frontend, e.g., show a user-friendly error message
-        }
+
+
+   const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    // Get the user ID from local storage
+    const userId = localStorage.getItem('userId');
+    const email = localStorage.getItem('email');
+    const number = localStorage.getItem('number');
+
+    // Include the user ID in the form data
+    const formDataWithUserId = {
+      ...formData,
+      userId: userId,
+      user_email : email,
+      user_number : number,
+   
     };
+
+    console.log('Form Data:', formDataWithUserId);
+
+    const response = await fetch('http://localhost:8000/api/studentsdetails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formDataWithUserId),
+    });
+
+    if (response.ok) {
+      console.log('Data submitted successfully:', response);
+      alert("Your Details Submitted Successfully");
+    } else {
+      console.error('Error submitting data');
+    }
+  } catch (error) {
+    console.error('Error creating data:', error);
+    // Handle the error appropriately in the frontend, e.g., show a user-friendly error message
+  }
+};
+
 
 
     return (
@@ -166,6 +187,7 @@ const Profile = () => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
+                                required
                             />
                         </div>
 
@@ -453,18 +475,20 @@ const Profile = () => {
 
                     <div>
                         <button type="submit"
-                            className=' p-2 text-xl text-white border rounded-md  bg-gray-800'
-                        >   Submit
+                        style={{marginLeft : "1300px", marginTop: "-100px"}}
+                            className=' p-2 text-xl text-white border rounded-md  bg-gray-800 submit-your-application'
+                        >   Save Your Details
 
                         </button>
                     </div>
-                </form>
+                        </form> 
+                   {/* here is the button for save  */}
 
                 <hr />
 
 
 
-                {/* <form>
+                 <form>
                 <div className="mt-6 text-2xl font-bold">
                     <h6>4.Upload Documents</h6>
                 </div>
@@ -480,7 +504,7 @@ const Profile = () => {
             id="students_resume"
             accept=".pdf, .doc, .docx"
             className="mt-1 p-2 w-full border rounded-md text-xl"
-            onChange={handleFileChange}
+            
           />
                         </div>
 
@@ -495,9 +519,9 @@ const Profile = () => {
           <input
             type="file"
             id="certification"
-            accept=".pdf, .doc, .docx"
+            accept="image/*"
             className="mt-1 p-2 w-full border rounded-md text-xl"
-            onChange={handleFileChange}
+           
           />
                         </div>
 
@@ -510,20 +534,25 @@ const Profile = () => {
             id="profile_picture"
             accept="image/*"
             className="mt-1 p-2 w-full border rounded-md text-xl"
-            onChange={handleFileChange}
+           
           />
                         </div>
                     </div>
                     <hr />
                     <div className="text-xl flex justify-end m-4">
-                         <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800'>Save Your Details</button>
+                         {/* <button type="button" className='mt-8 p-2 text-xl text-white border rounded-md  bg-gray-800'>Save Your Details</button> */}
 
-                        <div className="form-group">
-                            <button type='button' className='mt-8 p-2 text-xl text-white border rounded-md bg-gray-800' onClick={handleResume}>Create Resume</button>
-                        </div>
+                        
                     </div>
+
+                    
+                    <div className="form-group">
+                            <button type='button'
+                             style={{ marginTop: "-400px" }} 
+                            className='mt-8 p-2 text-xl text-white border rounded-md bg-red-800' onClick={handleResume}>Create Resume</button>
+                        </div>
+                </form>
                    
-                </form> */}
             </div>
 
         </div >

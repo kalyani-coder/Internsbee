@@ -47,6 +47,9 @@ const mongoose = require('mongoose');
 
 const StudentDetailsSchema = new mongoose.Schema({
   // Personal Details
+  userId : String,
+  user_email: String ,
+  user_number : String,
   firstName: String,
   lastName: String,
   email: String,
